@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { chain } from "@/lib/chain";
 import { VerificationType } from "@betoken/database";
+import { Profile as CirclesProfile } from "@circles-sdk/profiles";
 import {
   Address,
   Avatar,
@@ -14,14 +15,35 @@ import {
   Identity,
   Name,
 } from "@coinbase/onchainkit/identity";
-import { Wallet } from "@phosphor-icons/react";
+import { ArrowSquareOut, Wallet } from "@phosphor-icons/react";
 import { usePrivy, useWallets } from "@privy-io/react-auth";
 import { IDKitWidget, VerificationLevel } from "@worldcoin/idkit";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { getCirclesAvatarProfile } from "@/app/actions/circles";
 
 export default function SettingsPage() {
-  const { user, connectWallet } = usePrivy();
+  const { user, linkWallet } = usePrivy();
   const { isLoading, verifications } = useUserVerifications();
   const { wallets } = useWallets();
+  const [circlesAvatarProfile, setCirclesAvatarProfile] =
+    useState<CirclesProfile>();
+
+  const hasWorldID = verifications.some(
+    (v) => v.type === VerificationType.WORLD_ID
+  );
+
+  const externalWallet = wallets.find(
+    (wallet) => wallet.walletClientType !== "privy"
+  );
+
+  useEffect(() => {
+    if (externalWallet) {
+      getCirclesAvatarProfile(externalWallet.address).then((profile) => {
+        setCirclesAvatarProfile(profile);
+      });
+    }
+  }, [externalWallet]);
 
   if (!user) {
     return null;
@@ -32,14 +54,6 @@ export default function SettingsPage() {
     console.log("Success");
   };
 
-  const hasWorldID = verifications.some(
-    (v) => v.type === VerificationType.WORLD_ID
-  );
-
-  const externalWallet = wallets.find(
-    (wallet) => wallet.walletClientType !== "privy"
-  );
-
   return (
     <div className="grid gap-4">
       <div className="flex flex-col gap-2">
@@ -47,12 +61,14 @@ export default function SettingsPage() {
           Welcome back,{" "}
           <b>{user.telegram?.username || user.telegram?.firstName}</b>
         </h2>
+        <p className="text-muted-foreground text-sm">Total Score: 5</p>
       </div>
 
       <div className="flex flex-col gap-2">
-        <h2>Linked Wallet</h2>
-        {wallets
-          .filter((wallet) => wallet.walletClientType !== "privy")
+        <h2>Linked External Wallets</h2>
+        {user.linkedAccounts
+          .filter((account) => account.type === "wallet")
+          .filter((account) => account.walletClientType !== "privy")
           .map((wallet) => (
             <Card
               key={wallet.address}
@@ -67,9 +83,9 @@ export default function SettingsPage() {
               </Identity>
             </Card>
           ))}
-        <Button onClick={connectWallet}>
+        <Button onClick={linkWallet}>
           <Wallet size={32} className="w-8 h-8" weight="fill" />
-          {externalWallet ? "Change Linked Wallet" : "Link a Wallet"}
+          {externalWallet ? "Add Linked Wallet" : "Link a Wallet"}
         </Button>
       </div>
       <div className="flex flex-col gap-2">
@@ -93,6 +109,28 @@ export default function SettingsPage() {
             </Button>
           )}
         </IDKitWidget>
+      </div>
+      <div className="flex flex-col gap-2">
+        <h2 className="flex gap-2 items-center justify-between">
+          Circles
+          <Link
+            href="https://docs.aboutcircles.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <p className="inline-flex items-center gap-2 text-sm text-muted-foreground">
+              Learn more
+              <ArrowSquareOut size={16} />
+            </p>
+          </Link>
+        </h2>
+        {circlesAvatarProfile ? (
+          <div>{circlesAvatarProfile?.imageUrl}</div>
+        ) : (
+          <div className="text-sm text-muted-foreground">
+            Link your Circles avatar wallet above
+          </div>
+        )}
       </div>
     </div>
   );

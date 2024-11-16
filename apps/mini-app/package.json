@@ -10,6 +10,9 @@
   },
   "dependencies": {
     "@betoken/database": "*",
+    "@circles-sdk/adapter-ethers": "^0.14.0",
+    "@circles-sdk/profiles": "^0.14.0",
+    "@circles-sdk/sdk": "^0.14.0",
     "@coinbase/cbpay-js": "^2.4.0",
     "@coinbase/coinbase-sdk": "^0.10.0",
     "@coinbase/onchainkit": "^0.35.5",
@@ -24,6 +27,7 @@
     "@worldcoin/idkit": "^1.3.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "ethers": "^6.13.4",
     "next": "14.2.3",
     "next-themes": "^0.4.3",
     "react": "^18",

@@ -15,7 +15,7 @@ export const PayWithCoinbaseButton: React.FC = () => {
     }
     initOnRamp(
       {
-        appId: "fc271033-1df1-4bfd-b29a-09aa5b6b8f4d",
+        appId: process.env.NEXT_PUBLIC_CDP_PROJECT_ID!,
         widgetParameters: {
           // Specify the addresses and which networks they support
           addresses: { [privyWallet.address]: ["base"] },
