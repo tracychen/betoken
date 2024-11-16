@@ -2,6 +2,7 @@
 
 import { usePrivyWallet } from "@/app/hooks/usePrivyWallet";
 import { CopyWrapper } from "@/components/copy-wrapper";
+import { PayWithCoinbaseButton } from "@/components/fund/pay-with-cb-button";
 import { Card } from "@/components/ui/card";
 import { chain } from "@/lib/chain";
 import { truncateMiddle } from "@/lib/utils";
@@ -43,6 +44,7 @@ export default function SettingsPage() {
           <p className="text-sm">{balance?.value || 0} ETH</p>
         </Card>
       </div>
+      <PayWithCoinbaseButton />
     </div>
   );
 }
