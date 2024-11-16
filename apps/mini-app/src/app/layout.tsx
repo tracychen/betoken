@@ -3,6 +3,7 @@ import { JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { TmaSDKProvider } from "@/components/tma";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Tabs } from "@/components/nav/tabs";
 
 const jetBrainsMono = JetBrains_Mono({
   subsets: ["latin"],

@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import { Button } from "../ui/button";
 
 export function NavBar() {
-  const { ready, authenticated, login } = usePrivy();
+  const { ready, authenticated, login, logout, user } = usePrivy();
 
   const showLoginButton = ready && !authenticated;
   const showUserMenu = ready && authenticated;
@@ -13,7 +13,7 @@ export function NavBar() {
 
   return (
     <div className="sticky top-0 left-0 z-40 w-full">
-      <nav className="w-full py-4 px-6 flex justify-between items-center border-b border-b-neutral-700">
+      <nav className="w-full py-4 px-6 flex justify-between items-center border-b">
         <Link href="/" className="flex h-8 gap-0.5">
           <h1 className="font-mono font-bold text-2xl">BETOKEN</h1>
           <span className="self-start">
@@ -24,9 +24,13 @@ export function NavBar() {
             </div>
           </span>
         </Link>
-        {showLoginButton && (
+        {showLoginButton ? (
           <Button onClick={login} variant="secondary">
             LOG IN
+          </Button>
+        ) : (
+          <Button onClick={logout} variant="secondary">
+            LOG OUT {user?.telegram?.username}
           </Button>
         )}
       </nav>
