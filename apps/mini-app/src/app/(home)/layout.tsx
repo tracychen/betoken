@@ -2,7 +2,7 @@
 
 import { NavBar } from "@/components/nav/navbar";
 import { Tabs } from "@/components/nav/tabs";
-import { Web3Provider } from "@/components/wagmi/provider";
+import { Web3Provider } from "@/components/providers/provider";
 import { chain } from "@/lib/chain";
 import { PrivyProvider } from "@privy-io/react-auth";
 

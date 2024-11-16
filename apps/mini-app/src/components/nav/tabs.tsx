@@ -22,7 +22,7 @@ export const mobileTabs = [
     name: "CREATE",
     href: "/create-market",
     icon: Pencil,
-    requiresAuth: false,
+    requiresAuth: true,
   },
   {
     name: "FUND",
@@ -39,7 +39,7 @@ export const mobileTabs = [
 ];
 
 export function Tabs({ className }: { className?: string }) {
-  const { authenticated } = usePrivy();
+  const { authenticated, user } = usePrivy();
   const pathname = usePathname();
   return (
     <div
@@ -49,7 +49,7 @@ export function Tabs({ className }: { className?: string }) {
       )}
     >
       {mobileTabs.map((tab) => {
-        if (tab.requiresAuth && !authenticated) {
+        if (tab.requiresAuth && !user) {
           return null;
         }
         return (

@@ -80,7 +80,7 @@ export default function SettingsPage() {
     }
 
     return score;
-  }, [circlesAvatarProfile, verifications, wallets]);
+  }, [circlesAvatarProfile, verifications, wallets, hasCBAccount]);
 
   if (!user) {
     return null;
@@ -145,8 +145,8 @@ export default function SettingsPage() {
               {hasWorldID
                 ? "World ID verified"
                 : isLoading
-                ? "Checking..."
-                : "Verify with World ID"}
+                  ? "Checking..."
+                  : "Verify with World ID"}
             </Button>
           )}
         </IDKitWidget>
@@ -159,8 +159,8 @@ export default function SettingsPage() {
             {hasCBAccount
               ? "Coinbase account verified"
               : isLoadingAttestations
-              ? "Checking..."
-              : "Verify Coinbase account (EAS)"}
+                ? "Checking..."
+                : "Verify Coinbase account (EAS)"}
           </Link>
         </Button>
       </div>

@@ -6,16 +6,17 @@ import OnchainKitSwapButton from "@/components/fund/oc-kit-swap-button";
 import { PayWithCoinbaseButton } from "@/components/fund/pay-with-cb-button";
 import { Card } from "@/components/ui/card";
 import { chain } from "@/lib/chain";
-import { CopySimple } from "@phosphor-icons/react";
+import { ArrowsClockwise, CopySimple } from "@phosphor-icons/react";
 import { usePrivy } from "@privy-io/react-auth";
 import { useBalance } from "wagmi";
 import { Address } from "@coinbase/onchainkit/identity";
 import { Button } from "@/components/ui/button";
+import { defaultEther } from "@/lib/utils";
 
 export default function SettingsPage() {
   const { user } = usePrivy();
   const { privyWallet } = usePrivyWallet();
-  const { data: balance } = useBalance({
+  const { data: balance, refetch } = useBalance({
     address: (privyWallet?.address || "0x0") as `0x${string}`,
     chainId: chain.id,
   });
@@ -44,10 +45,13 @@ export default function SettingsPage() {
       </div>
       <div className="flex flex-col gap-2">
         <h2>Balance</h2>
-        <Card className="rounded-md px-4 py-2.5 flex text-muted-foreground">
+        <Card className="rounded-md px-4 py-2.5 flex text-muted-foreground items-center justify-between">
           <p className="text-sm">
-            {balance?.value || 0} ETH ({chain.name})
+            {defaultEther(balance?.value || 0)} ETH ({chain.name})
           </p>
+          <div onClick={() => refetch()} className="hover:cursor-pointer">
+            <ArrowsClockwise className="w-4 h-4" />
+          </div>
         </Card>
       </div>
       <div className="flex flex-col gap-2">
