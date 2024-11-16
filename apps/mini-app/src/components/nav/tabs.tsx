@@ -53,7 +53,7 @@ export function Tabs({ className }: { className?: string }) {
             href={tab.href}
             className={cn(
               "flex-col flex gap-1 items-center flex-1 text-xs",
-              pathname === tab.href ? "text-accent" : "text-secondary"
+              pathname === tab.href ? "text-accent" : "text-muted-foreground"
             )}
           >
             {tab.icon && <tab.icon size={24} className="w-6 h-6" />}

@@ -4,6 +4,7 @@ import "./globals.css";
 import { TmaSDKProvider } from "@/components/tma";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Tabs } from "@/components/nav/tabs";
+import { Toaster } from "@/components/ui/toaster";
 
 const jetBrainsMono = JetBrains_Mono({
   subsets: ["latin"],
@@ -41,6 +42,7 @@ export default function RootLayout({
         >
           <TmaSDKProvider>{children}</TmaSDKProvider>
         </ThemeProvider>
+        <Toaster />
       </body>
     </html>
   );

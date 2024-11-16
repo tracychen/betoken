@@ -2,6 +2,7 @@
 
 import { NavBar } from "@/components/nav/navbar";
 import { Tabs } from "@/components/nav/tabs";
+import { Web3Provider } from "@/components/wagmi/provider";
 import { chain } from "@/lib/chain";
 import { PrivyProvider } from "@privy-io/react-auth";
 
@@ -24,11 +25,15 @@ export default function RootLayout({
         },
       }}
     >
-      <main className="flex min-h-screen flex-col">
-        <NavBar />
-        <div className="min-h-[calc(100vh-146px)] px-6 py-4">{children}</div>
-        <Tabs />
-      </main>
+      <Web3Provider>
+        <main className="flex min-h-screen flex-col">
+          <NavBar />
+          <div className="min-h-[calc(100vh-146px)] px-6 py-4 overflow-hidden">
+            {children}
+          </div>
+          <Tabs />
+        </main>
+      </Web3Provider>
     </PrivyProvider>
   );
 }

@@ -1,11 +1,11 @@
 {
-  "name": "telegram-bot",
+  "name": "@betoken/bot",
   "version": "1.0.0",
   "description": "",
   "main": "dist/main.js",
   "scripts": {
     "ts-prepare": "ts-patch install -s",
-    "start:dev": "pnpm run ts-prepare && ts-node ./src/main.ts",
+    "dev": "pnpm run ts-prepare && ts-node ./src/main.ts",
     "start:prod": "node ./dist/main.js",
     "build": "tsc && tsc-alias"
   },

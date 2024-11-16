@@ -1,5 +1,5 @@
 {
-  "name": "telegram-mini-app-nextjs-boilerplate",
+  "name": "@betoken/mini-app",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,12 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@betoken/database": "*",
     "@phosphor-icons/react": "^2.1.7",
     "@privy-io/react-auth": "^1.94.2",
     "@radix-ui/react-icons": "^1.3.0",
     "@radix-ui/react-slot": "^1.1.0",
+    "@radix-ui/react-toast": "^1.2.2",
+    "@tanstack/react-query": "^5.60.5",
     "@tma.js/sdk": "^1.5.3",
-    "@tma.js/sdk-react": "^2.0.3",
+    "@tma.js/sdk-react": "2.0.3",
     "@worldcoin/idkit": "^1.3.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
@@ -24,7 +27,8 @@
     "react-dom": "^18",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
-    "viem": "^2.21.45"
+    "viem": "^2.21.45",
+    "wagmi": "^2.12.33"
   },
   "devDependencies": {
     "@types/node": "^20",

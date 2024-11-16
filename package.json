@@ -6,9 +6,15 @@
     "turbo": "^2.3.0"
   },
   "scripts": {
-   "check-types": "tsc --noEmit"
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "generate": "turbo run generate",
+    "lint": "turbo run lint",
+    "check-types": "tsc --noEmit",
+    "preinstall": "npx only-allow pnpm"
   },
-  "packageManager": "pnpm@7.21.1",
+  "packageManager": "pnpm@7.33.7",
   "workspaces": [
     "apps/*",
     "packages/*"
