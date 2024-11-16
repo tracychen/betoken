@@ -11,8 +11,8 @@ export function Me() {
   }
 
   return (
-    <div className="text-sm">
-      <code>Welcome back </code>
+    <div className="text-sm font-mono">
+      <div>Welcome back </div>
       <code className="font-mono font-bold">@{user.username}</code>
     </div>
   );
