@@ -24,9 +24,9 @@ export default function RootLayout({
         },
       }}
     >
-      <main className="flex min-h-screen flex-col items-center justify-between">
+      <main className="flex min-h-screen flex-col">
         <NavBar />
-        {children}
+        <div className="min-h-[calc(100vh-146px)] px-6 py-4">{children}</div>
         <Tabs />
       </main>
     </PrivyProvider>

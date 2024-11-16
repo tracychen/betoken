@@ -12,7 +12,7 @@ export function NavBar() {
   const pathname = usePathname();
 
   return (
-    <div className="sticky top-0 left-0 z-40 w-full">
+    <div className="sticky top-0 left-0 z-40 w-full bg-background">
       <nav className="w-full py-4 px-6 flex justify-between items-center border-b">
         <Link href="/" className="flex h-8 gap-0.5">
           <h1 className="font-mono font-bold text-2xl">BETOKEN</h1>
