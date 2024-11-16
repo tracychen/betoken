@@ -9,8 +9,8 @@ import { chain } from "@/lib/chain";
 import { CopySimple } from "@phosphor-icons/react";
 import { usePrivy } from "@privy-io/react-auth";
 import { useBalance } from "wagmi";
-
 import { Address } from "@coinbase/onchainkit/identity";
+import { Button } from "@/components/ui/button";
 
 export default function SettingsPage() {
   const { user } = usePrivy();
@@ -53,6 +53,20 @@ export default function SettingsPage() {
       <div className="flex flex-col gap-2">
         <h2>Fund Wallet</h2>
         <div className="flex flex-col gap-2">
+          <Button
+            className="w-full"
+            onClick={async () =>
+              await privyWallet!.fund({
+                chain: chain,
+                amount: "0.01",
+              })
+            }
+          >
+            Fund with 0.01 ETH
+          </Button>
+          <p className="text-muted-foreground text-xs w-full text-center">
+            --- or ---
+          </p>
           <PayWithCoinbaseButton />
           <p className="text-muted-foreground text-xs w-full text-center">
             --- or ---
