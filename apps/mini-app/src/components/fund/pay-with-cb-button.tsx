@@ -2,6 +2,7 @@ import { usePrivyWallet } from "@/app/hooks/usePrivyWallet";
 import { CBPayInstanceType, initOnRamp } from "@coinbase/cbpay-js";
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
+import { ArrowSquareOut } from "@phosphor-icons/react";
 
 export const PayWithCoinbaseButton: React.FC = () => {
   const { privyWallet } = usePrivyWallet();
@@ -51,8 +52,13 @@ export const PayWithCoinbaseButton: React.FC = () => {
   };
 
   return (
-    <Button onClick={handleClick} disabled={!onrampInstance}>
+    <Button
+      onClick={handleClick}
+      disabled={!onrampInstance}
+      className="flex items-center gap-2"
+    >
       Buy with Coinbase
+      <ArrowSquareOut size={16} />
     </Button>
   );
 };
