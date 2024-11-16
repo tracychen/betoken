@@ -4,7 +4,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { usePrivy } from "@privy-io/react-auth";
 import { cn } from "@/lib/utils";
-import { Gear, Pencil, Ranking, Storefront } from "@phosphor-icons/react";
+import {
+  Pencil,
+  Storefront,
+  UserCircleGear,
+  Wallet,
+} from "@phosphor-icons/react";
 
 export const mobileTabs = [
   {
@@ -20,15 +25,15 @@ export const mobileTabs = [
     requiresAuth: false,
   },
   {
-    name: "LEADERBOARD",
-    href: "/leaderboard",
-    icon: Ranking,
-    requiresAuth: false,
+    name: "FUND",
+    href: "/fund",
+    icon: Wallet,
+    requiresAuth: true,
   },
   {
-    name: "SETTINGS",
+    name: "ACCOUNT",
     href: "/settings",
-    icon: Gear,
+    icon: UserCircleGear,
     requiresAuth: true,
   },
 ];

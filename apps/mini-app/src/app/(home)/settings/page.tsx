@@ -1,28 +1,16 @@
 "use client";
 
 import { verifyProof } from "@/app/actions/verify-proof";
-import { usePrivyWallet } from "@/app/hooks/usePrivyWallet";
 import { useUserVerifications } from "@/app/hooks/useUserVerifications";
-import { CopyWrapper } from "@/components/copy-wrapper";
 import { WorldCoinIcon } from "@/components/custom-icons";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { chain } from "@/lib/chain";
-import { truncateMiddle } from "@/lib/utils";
 import { VerificationType } from "@betoken/database";
-import { CopySimple } from "@phosphor-icons/react";
 import { usePrivy } from "@privy-io/react-auth";
 import { IDKitWidget, VerificationLevel } from "@worldcoin/idkit";
-import { useBalance } from "wagmi";
 
 export default function SettingsPage() {
   const { user } = usePrivy();
   const { isLoading, verifications } = useUserVerifications();
-  const { privyWallet } = usePrivyWallet();
-  const { data: balance, refetch } = useBalance({
-    address: (privyWallet?.address || "0x0") as `0x${string}`,
-    chainId: chain.id,
-  });
 
   if (!user) {
     return null;
@@ -39,7 +27,7 @@ export default function SettingsPage() {
 
   return (
     <div className="grid gap-4">
-      <div className="flex flex-col gap-2">
+      {/* <div className="flex flex-col gap-2">
         <h2>Wallet Address</h2>
         <Card className="rounded-md px-4 py-2.5 flex items-center justify-between text-muted-foreground">
           <p className="text-sm">
@@ -58,7 +46,7 @@ export default function SettingsPage() {
         <Card className="rounded-md px-4 py-2.5 flex text-muted-foreground">
           <p className="text-sm">{balance?.value || 0} ETH</p>
         </Card>
-      </div>
+      </div> */}
       <div className="flex flex-col gap-2">
         <h2>User Verifications</h2>
         <IDKitWidget
