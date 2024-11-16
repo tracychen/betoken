@@ -2,10 +2,10 @@
 
 import { verifyProof } from "@/app/actions/verify-proof";
 import { useUserVerifications } from "@/app/hooks/useUserVerifications";
-import { WorldCoinIcon } from "@/components/custom-icons";
+import { CoinbaseIcon, WorldCoinIcon } from "@/components/custom-icons";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { chain } from "@/lib/chain";
+import { chain, publicClient } from "@/lib/chain";
 import { VerificationType } from "@betoken/database";
 import { Profile as CirclesProfile } from "@circles-sdk/profiles";
 import {
@@ -18,9 +18,12 @@ import {
 import { ArrowSquareOut, Wallet } from "@phosphor-icons/react";
 import { usePrivy, useWallets } from "@privy-io/react-auth";
 import { IDKitWidget, VerificationLevel } from "@worldcoin/idkit";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { getCirclesAvatarProfile } from "@/app/actions/circles";
+import { getBalance } from "viem/actions";
+import { parseEther } from "viem";
+import { useUserAttestations } from "@/app/hooks/useUserAttestations";
 
 export default function SettingsPage() {
   const { user, linkWallet } = usePrivy();
@@ -28,22 +31,56 @@ export default function SettingsPage() {
   const { wallets } = useWallets();
   const [circlesAvatarProfile, setCirclesAvatarProfile] =
     useState<CirclesProfile>();
+  const { isLoading: isLoadingAttestations, attestations } =
+    useUserAttestations();
 
   const hasWorldID = verifications.some(
     (v) => v.type === VerificationType.WORLD_ID
   );
 
-  const externalWallet = wallets.find(
-    (wallet) => wallet.walletClientType !== "privy"
-  );
+  const hasCBAccount = attestations.length > 0;
+
+  const externalWallets = user?.linkedAccounts
+    .filter((account) => account.type === "wallet")
+    .filter((account) => account.walletClientType !== "privy");
 
   useEffect(() => {
-    if (externalWallet) {
-      getCirclesAvatarProfile(externalWallet.address).then((profile) => {
-        setCirclesAvatarProfile(profile);
+    if (externalWallets) {
+      for (const wallet of externalWallets) {
+        getCirclesAvatarProfile(wallet.address).then((profile) => {
+          setCirclesAvatarProfile(profile);
+        });
+      }
+    }
+  }, [externalWallets]);
+
+  const repulationScore = useMemo(() => {
+    let score = 0;
+
+    if (circlesAvatarProfile) {
+      score += 5;
+    }
+
+    for (const _ of verifications) {
+      score += 5;
+    }
+
+    if (hasCBAccount) {
+      score += 5;
+    }
+
+    for (const wallet of wallets) {
+      getBalance(publicClient, {
+        address: wallet.address as `0x${string}`,
+      }).then((balance) => {
+        if (balance > parseEther("0.01")) {
+          score += 2;
+        }
       });
     }
-  }, [externalWallet]);
+
+    return score;
+  }, [circlesAvatarProfile, verifications, wallets]);
 
   if (!user) {
     return null;
@@ -61,7 +98,9 @@ export default function SettingsPage() {
           Welcome back,{" "}
           <b>{user.telegram?.username || user.telegram?.firstName}</b>
         </h2>
-        <p className="text-muted-foreground text-sm">Total Score: 5</p>
+        <p className="text-muted-foreground text-sm">
+          Reputation Score: {repulationScore}
+        </p>
       </div>
 
       <div className="flex flex-col gap-2">
@@ -75,7 +114,7 @@ export default function SettingsPage() {
               className="flex items-center justify-between rounded-md px-4 py-2.5"
             >
               <Identity address={wallet.address as `0x${string}`} chain={chain}>
-                <Avatar className="mr-2" />
+                <Avatar className="mr-2 h-10 w-10" />
                 <Name>
                   <Badge />
                 </Name>
@@ -85,7 +124,9 @@ export default function SettingsPage() {
           ))}
         <Button onClick={linkWallet}>
           <Wallet size={32} className="w-8 h-8" weight="fill" />
-          {externalWallet ? "Add Linked Wallet" : "Link a Wallet"}
+          {externalWallets && externalWallets.length
+            ? "Link another wallet"
+            : "Link a Wallet"}
         </Button>
       </div>
       <div className="flex flex-col gap-2">
@@ -102,13 +143,26 @@ export default function SettingsPage() {
             <Button disabled={isLoading || hasWorldID} onClick={open}>
               <WorldCoinIcon className="w-8 h-8" />
               {hasWorldID
-                ? "World ID Verified"
+                ? "World ID verified"
                 : isLoading
                 ? "Checking..."
                 : "Verify with World ID"}
             </Button>
           )}
         </IDKitWidget>
+        <Button disabled={isLoadingAttestations || hasCBAccount}>
+          <Link
+            href="https://www.coinbase.com/onchain-verify"
+            className="w-full flex items-center gap-2 justify-center"
+          >
+            <CoinbaseIcon className="w-8 h-8" />
+            {hasCBAccount
+              ? "Coinbase account verified"
+              : isLoadingAttestations
+              ? "Checking..."
+              : "Verify Coinbase account (EAS)"}
+          </Link>
+        </Button>
       </div>
       <div className="flex flex-col gap-2">
         <h2 className="flex gap-2 items-center justify-between">
@@ -128,7 +182,7 @@ export default function SettingsPage() {
           <div>{circlesAvatarProfile?.imageUrl}</div>
         ) : (
           <div className="text-sm text-muted-foreground">
-            Link your Circles avatar wallet above
+            Link your Circles avatar wallet to check for profile
           </div>
         )}
       </div>

@@ -29,8 +29,12 @@ export async function getCirclesAvatarProfile(walletAddress: string) {
 
   const circlesSdk = await getCirclesSdk();
 
-  const avatar = await circlesSdk.getAvatar(walletAddress);
-  const profile = await avatar.getProfile();
-  console.log({ profile });
-  return profile;
+  try {
+    const avatar = await circlesSdk.getAvatar(walletAddress);
+    const profile = await avatar.getProfile();
+    console.log({ profile });
+    return profile;
+  } catch (error) {
+    console.error(error);
+  }
 }
