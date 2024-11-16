@@ -1,0 +1,4 @@
+@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/
+chronicle-std/contracts/=lib/chronicle-std/src/
+chronicle/self-kisser/contracts/=lib/self-kisser/src/
+forge-std/=lib/forge-std/src/
