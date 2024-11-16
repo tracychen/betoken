@@ -4,13 +4,24 @@ import { verifyProof } from "@/app/actions/verify-proof";
 import { useUserVerifications } from "@/app/hooks/useUserVerifications";
 import { WorldCoinIcon } from "@/components/custom-icons";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { chain } from "@/lib/chain";
 import { VerificationType } from "@betoken/database";
-import { usePrivy } from "@privy-io/react-auth";
+import {
+  Address,
+  Avatar,
+  Badge,
+  Identity,
+  Name,
+} from "@coinbase/onchainkit/identity";
+import { Wallet } from "@phosphor-icons/react";
+import { usePrivy, useWallets } from "@privy-io/react-auth";
 import { IDKitWidget, VerificationLevel } from "@worldcoin/idkit";
 
 export default function SettingsPage() {
-  const { user } = usePrivy();
+  const { user, connectWallet } = usePrivy();
   const { isLoading, verifications } = useUserVerifications();
+  const { wallets } = useWallets();
 
   if (!user) {
     return null;
@@ -25,28 +36,42 @@ export default function SettingsPage() {
     (v) => v.type === VerificationType.WORLD_ID
   );
 
+  const externalWallet = wallets.find(
+    (wallet) => wallet.walletClientType !== "privy"
+  );
+
   return (
     <div className="grid gap-4">
-      {/* <div className="flex flex-col gap-2">
-        <h2>Wallet Address</h2>
-        <Card className="rounded-md px-4 py-2.5 flex items-center justify-between text-muted-foreground">
-          <p className="text-sm">
-            {truncateMiddle(privyWallet?.address || "", 18)}
-          </p>
-          <CopyWrapper
-            text={privyWallet?.address || ""}
-            toastTitle="Wallet address copied"
-          >
-            <CopySimple className="w-4 h-4" />
-          </CopyWrapper>
-        </Card>
-      </div>
       <div className="flex flex-col gap-2">
-        <h2>Balance</h2>
-        <Card className="rounded-md px-4 py-2.5 flex text-muted-foreground">
-          <p className="text-sm">{balance?.value || 0} ETH</p>
-        </Card>
-      </div> */}
+        <h2>
+          Welcome back,{" "}
+          <b>{user.telegram?.username || user.telegram?.firstName}</b>
+        </h2>
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <h2>Linked Wallet</h2>
+        {wallets
+          .filter((wallet) => wallet.walletClientType !== "privy")
+          .map((wallet) => (
+            <Card
+              key={wallet.address}
+              className="flex items-center justify-between rounded-md px-4 py-2.5"
+            >
+              <Identity address={wallet.address as `0x${string}`} chain={chain}>
+                <Avatar className="mr-2" />
+                <Name>
+                  <Badge />
+                </Name>
+                <Address />
+              </Identity>
+            </Card>
+          ))}
+        <Button onClick={connectWallet}>
+          <Wallet size={32} className="w-8 h-8" weight="fill" />
+          {externalWallet ? "Change Linked Wallet" : "Link a Wallet"}
+        </Button>
+      </div>
       <div className="flex flex-col gap-2">
         <h2>User Verifications</h2>
         <IDKitWidget
@@ -58,13 +83,13 @@ export default function SettingsPage() {
           onSuccess={onSuccess}
         >
           {({ open }) => (
-            <Button
-              disabled={isLoading || hasWorldID}
-              onClick={open}
-              className="flex gap-2 items-center"
-            >
+            <Button disabled={isLoading || hasWorldID} onClick={open}>
               <WorldCoinIcon className="w-8 h-8" />
-              {hasWorldID ? "World ID Verified" : "Verify with World ID"}
+              {hasWorldID
+                ? "World ID Verified"
+                : isLoading
+                ? "Checking..."
+                : "Verify with World ID"}
             </Button>
           )}
         </IDKitWidget>
