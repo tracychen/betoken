@@ -30,7 +30,7 @@ export function NavBar() {
           </Button>
         ) : (
           <Button onClick={logout} variant="secondary">
-            LOG OUT {user?.telegram?.username}
+            LOG OUT
           </Button>
         )}
       </nav>
