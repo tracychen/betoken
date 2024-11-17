@@ -7,7 +7,7 @@ gas_reports = []
 fs_permissions = [{ access = "read", path = "./broadcast" }]
 
 [rpc_endpoints]
-mantle-testnet = "https://rpc.testnet.mantle.xyz"
+mantle-testnet = "https://rpc.sepolia.mantle.xyz"
 base-mainnet = "https://mainnet.base.org"
 base-testnet = "https://sepolia.base.org"
 local = "127.0.0.1:8545"

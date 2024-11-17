@@ -1,7 +1,10 @@
 import { createPublicClient, http } from "viem";
-import { base, baseSepolia } from "viem/chains";
+import { baseSepolia, mantleSepoliaTestnet } from "viem/chains";
 
-export const chain = baseSepolia;
+export const chain =
+  process.env.NEXT_PUBLIC_CHAIN === "mantle"
+    ? mantleSepoliaTestnet
+    : baseSepolia;
 
 export const publicClient = createPublicClient({
   chain: chain,
@@ -10,4 +13,5 @@ export const publicClient = createPublicClient({
 
 export const explorerEndpoints = {
   [baseSepolia.id]: "https://base-sepolia.blockscout.com",
+  [mantleSepoliaTestnet.id]: "https://explorer.sepolia.mantle.xyz",
 };

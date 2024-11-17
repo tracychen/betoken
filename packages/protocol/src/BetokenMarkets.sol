@@ -36,7 +36,8 @@ contract PriceResolver is IMarketResolver {
         
         // Get latest price from Chronicle
         IChronicle chronicle = IChronicle(target.priceFeed);
-        ISelfKisser selfKisser = ISelfKisser(address(0x70E58b7A1c884fFFE7dbce5249337603a28b8422));
+        // Change for each network!
+        ISelfKisser selfKisser = ISelfKisser(address(0x9ee0DC1f7cF1a5c083914e3de197Fd1F484E0578));
         // Add address(this) to chronicle oracle's whitelist.
         selfKisser.selfKiss(address(chronicle));
         (
