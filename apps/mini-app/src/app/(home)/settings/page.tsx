@@ -24,6 +24,7 @@ import { getCirclesAvatarProfile } from "@/app/actions/circles";
 import { getBalance } from "viem/actions";
 import { parseEther } from "viem";
 import { useUserAttestations } from "@/app/hooks/useUserAttestations";
+import { upsertUserScore } from "@/app/actions/user-verifications";
 
 export default function SettingsPage() {
   const { user, linkWallet } = usePrivy();
@@ -55,6 +56,9 @@ export default function SettingsPage() {
   }, [externalWallets]);
 
   const repulationScore = useMemo(() => {
+    if (!user) {
+      return 0;
+    }
     let score = 0;
 
     if (circlesAvatarProfile) {
@@ -78,7 +82,9 @@ export default function SettingsPage() {
         }
       });
     }
-
+    upsertUserScore(user.id, score).then(() => {
+      console.log("Score updated");
+    });
     return score;
   }, [circlesAvatarProfile, verifications, wallets, hasCBAccount]);
 

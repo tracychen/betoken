@@ -1,7 +1,7 @@
-import { base } from "viem/chains";
+import { baseSepolia } from "viem/chains";
 
 export const betokenMarketsContractAddress = {
-  [base.id]: "0x5fa2160d4623794b545c4b8ef2d93621a2dfd8a3",
+  [baseSepolia.id]: "0x5fa2160d4623794b545c4b8ef2d93621a2dfd8a3",
 };
 
 export const betokenMarketsABI = [

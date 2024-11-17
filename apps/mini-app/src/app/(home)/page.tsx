@@ -1,18 +1,59 @@
 "use client";
 
-import Image from "next/image";
+import { useEffect, useState } from "react";
+import { getMarkets } from "../actions/markets";
+import { Card } from "@/components/ui/card";
+import { ArrowsClockwise } from "@phosphor-icons/react";
+import { MarketCard } from "@/components/market/market-card";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Home() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [markets, setMarkets] = useState<any>([]);
+
+  const fetchMarkets = async () => {
+    setIsLoading(true);
+    try {
+      const markets = await getMarkets();
+      setMarkets(markets);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchMarkets();
+  }, []);
+
   return (
-    <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-      <Image
-        className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-        src="/next.svg"
-        alt="Next.js Logo"
-        width={180}
-        height={37}
-        priority
-      />
+    <div className="grid gap-4">
+      <div className="flex items-center justify-between">
+        <h2>Markets</h2>
+        <div onClick={() => fetchMarkets()} className="hover:cursor-pointer">
+          <ArrowsClockwise className="w-4 h-4" />
+        </div>
+      </div>
+      {isLoading ? (
+        <Skeleton className="w-full h-48" />
+      ) : (
+        markets.map((market: any) => (
+          // <Card
+          //   key={market.id}
+          //   className="px-4 py-2.5 rounded-md flex flex-col gap-2"
+          // >
+          //   <h2>{market.title}</h2>
+          //   <div className="text-sm text-muted-foreground">
+          //     <p>Description: {market.description}</p>
+          //     <p>Options: {market.options.join(", ")}</p>
+          //     <p>Creator: {market.creator}</p>
+          //     <p>Tx hash: {market.transactionHash}</p>
+          //   </div>
+          // </Card>
+          <MarketCard market={market} key={market.id} />
+        ))
+      )}
     </div>
   );
 }

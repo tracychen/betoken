@@ -21,6 +21,13 @@ model UserVerification {
   updatedAt DateTime @updatedAt
 }
 
+model UserScore {
+  did    String @id
+  score Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 enum MarketStatus {
   OPEN
   RESOLVED

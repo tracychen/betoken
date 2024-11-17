@@ -12,7 +12,7 @@ const getCirclesSdk = async () => {
     const provider = new ethers.JsonRpcProvider(gnosis.rpcUrls.default.http[0]);
     const contractRunner = new PrivateKeyContractRunner(
       provider,
-      process.env.CIRCLES_CONTRACT_RUNNER_PK!
+      process.env.PRIVATE_KEY!
     );
 
     await contractRunner.init();

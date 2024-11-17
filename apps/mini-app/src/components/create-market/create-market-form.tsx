@@ -31,7 +31,7 @@ import { Market, MarketStatus } from "@betoken/database";
 import { MarketFormValues } from "./types";
 import { parseEther } from "viem";
 import { useMarketActions } from "@/app/hooks/useMarketActions";
-import { saveMarket } from "@/app/actions/markets";
+import { getMarkets, saveMarket } from "@/app/actions/markets";
 import { MarketInitialLiquidityFormQuestion } from "./market-initial-liquidity-form-question";
 
 const maxClosingTimestamp = new Date(1733011200000); // BE API body validation also needs to be updated if this changes
@@ -138,6 +138,7 @@ export function CreateMarketForm() {
         status: MarketStatus.OPEN,
       });
       setMarket(market);
+      await getMarkets();
     } catch (error: any) {
       console.error(error);
       toast({
@@ -350,18 +351,12 @@ export function CreateMarketForm() {
                   <div className="grid gap-8">
                     <div className="flex flex-col items-center gap-2">
                       <FormLabel className="text-center">
-                        LFG YOUR MARKET IS LIVE!
+                        YOUR MARKET IS LIVE!
                       </FormLabel>
                       <FormDescription className="text-center">
-                        Let&apos;s go, you&apos;ve created your market. Get your
-                        skin in the game and inject liquidity in the market.
+                        Let&apos;s go, you&apos;ve created your market.
                       </FormDescription>
                     </div>
-                    <MarketCard
-                      market={market}
-                      showProgress={false}
-                      showCopyButton={false}
-                    />
                     <div className="flex flex-col sm:flex-row justify-between gap-2 sm:gap-4">
                       <CopyWrapper
                         className="flex-1"

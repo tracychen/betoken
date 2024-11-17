@@ -37,6 +37,7 @@ export function MarketTimestamp({
         `ENDS ON ${new Date(closingTimestampMs).toLocaleString("en-US", {
           month: "numeric",
           day: "numeric",
+          year: "numeric",
         })}`
       );
     } else {

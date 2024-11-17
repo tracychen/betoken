@@ -7,3 +7,7 @@ export const publicClient = createPublicClient({
   chain: chain,
   transport: http(),
 });
+
+export const explorerEndpoints = {
+  [baseSepolia.id]: "https://base-sepolia.blockscout.com",
+};
