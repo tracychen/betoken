@@ -43,7 +43,7 @@ export function MarketCard({
           <div className="flex gap-2">
             <MarketTimestamp
               status={market?.status}
-              closingTimestamp={market?.closesAt}
+              closesAt={market?.closesAt}
               resolutionTime={market?.resolutionTime}
             />
             <div className="p-2 border border-neutral-250 border-dashed flex items-center self-stretch">
