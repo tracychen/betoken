@@ -18,7 +18,7 @@ export function MarketInitialLiquidityFormQuestion({
   return (
     <FormField
       control={form.control}
-      defaultValue={0}
+      defaultValue={0.005}
       name="initialLiquidity"
       render={({ field }: { field: any }) => (
         <FormItem>

@@ -34,7 +34,7 @@ import { useMarketActions } from "@/app/hooks/useMarketActions";
 import { getMarkets, saveMarket } from "@/app/actions/markets";
 import { MarketInitialLiquidityFormQuestion } from "./market-initial-liquidity-form-question";
 
-const maxClosingTimestamp = new Date(1733011200000); // BE API body validation also needs to be updated if this changes
+const maxClosingTimestamp = new Date(1736011200000);
 const maxOptions = 6;
 
 const formSchema = z.object({
@@ -84,13 +84,6 @@ const formSchema = z.object({
   initialLiquidity: z.string().refine((val) => !Number.isNaN(parseFloat(val)), {
     message: "Expected number, received a string",
   }),
-  // image: z
-  //   .string({
-  //     message: "Image is required",
-  //   })
-  //   .min(1, {
-  //     message: "Image is required",
-  //   }),
 });
 
 export function CreateMarketForm() {
@@ -111,8 +104,7 @@ export function CreateMarketForm() {
       closingTimestamp: new Date(),
       title: "",
       description: "",
-      initialLiquidity: 0,
-      // image: "",
+      initialLiquidity: 0.005,
     },
     mode: "onBlur",
   });
@@ -275,7 +267,6 @@ export function CreateMarketForm() {
                         form.getValues("closingTimestamp")
                       ),
                       initialLiquidity: form.getValues("initialLiquidity"),
-                      // image: form.getValues("image"),
                     };
                     // Trigger market creation
                     try {
@@ -331,16 +322,6 @@ export function CreateMarketForm() {
                       </FormDescription>
                     </div>
                     <Spinner size="large" />
-                    {/* {saveMarketError && (
-                      <div className="text-rose-500 text-sm text-ellipsis line-clamp-5">
-                        {saveMarketError}
-                      </div>
-                    )}
-                    {marketError && (
-                      <div className="text-rose-500 text-sm text-ellipsis line-clamp-5">
-                        {marketError}
-                      </div>
-                    )} */}
                     {error && (
                       <div className="text-rose-500 text-sm text-ellipsis line-clamp-5 w-full">
                         {error}
